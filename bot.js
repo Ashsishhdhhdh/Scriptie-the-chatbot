@@ -11,19 +11,11 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
 
-
-
-// Interact with start command listener
-bot.onText(/\/start$/, (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, "Hi! Is there anything that I can help you with 😉");
-});
-
-bot.onText(/\/respond (.+)/, (msg) => {
+bot.on('message', (msg) => {
     const chatId = msg.chat.id;
-    const prompt = msg.text.replace(/\/respond\s+/, "");
+    const prompt = msg.text;
     async function gemini_response() {
-        const result = await model.generateContent(prompt + " Respond with appropriate and interactive emojis");
+        const result = await model.generateContent(prompt + ". Respond with appropriate and interactive emojis.");
         return result;
     }
     
